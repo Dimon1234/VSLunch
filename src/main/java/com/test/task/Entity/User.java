@@ -1,55 +1,53 @@
 package com.test.task.Entity;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "User")
-public class User implements Serializable{
+public class User implements Serializable {
+
+    private static final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "User_id")
+    @Column(name = "user_id")
     private int id;
 
-    @Column(name = "User_name")
+    @Column(name = "user_name", nullable = false)
     private String name;
 
-    @Column(name = "password")
+    @NotEmpty
+    @Length(min = 6)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "votes")
-    private int votes;
+
+    @Column(name = "email", nullable = false)
+    private String email;
 
 
-    private boolean isAdmin;
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<Role> roleSet;
+
 
     public User() {
     }
 
-    public User(String name, String password) {
+    public User(String name, String password, String email, Set<Role> roleSet) {
         this.name = name;
         this.password = password;
-
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", votes=" + votes +
-                ", isAdmin=" + isAdmin +
-                '}';
-    }
-
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
+        this.email = email;
+        this.roleSet = roleSet;
     }
 
     public int getId() {
@@ -76,13 +74,30 @@ public class User implements Serializable{
         this.password = password;
     }
 
-    public int getVotes() {
-        return votes;
+    public String getEmail() {
+        return email;
     }
 
-    public void setVotes(int votes) {
-        this.votes = votes;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
+    public Set<Role> getRoleSet() {
+        return roleSet;
+    }
 
+    public void setRoleSet(Set<Role> roleSet) {
+        this.roleSet = roleSet;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", roleSet=" + roleSet +
+                '}';
+    }
 }

@@ -3,53 +3,42 @@ package com.test.task.Entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 import static javax.persistence.GenerationType.AUTO;
 
 @Entity
-@Table(name = "Restaurant")
-public class Restaurant implements Serializable{
+@Table(name = "Restaurant", uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "rest_name"}, name = "unique_id")})
+public class Restaurant implements Serializable {
 
-    @OneToMany(mappedBy = "restaurant")
-    private List<Dish> dishList = new ArrayList<>();
 
     @Id
     @GeneratedValue(strategy = AUTO)
-    @Column(name = "Restaurant_ID")
+    @Column(name = "restaurant_id")
     private int id;
 
-    @Column(name = "REST_NAME", length = 200)
+    @Column(name = "rest_name", length = 200, nullable = false)
     private String restaurantName;
 
-    @Column(name = "VOTES")
-    private int votesCount;
+
+
+
 
     public Restaurant() {
     }
 
-    public Restaurant(String restaurantName, int votesCount) {
+    public Restaurant(String restaurantName) {
         this.restaurantName = restaurantName;
-        this.votesCount = votesCount;
     }
 
-    public Restaurant(Set<Dish> dishesSet, String restaurantName, int votesCount) {
-        this.dishList = dishList;
+    public Restaurant(String restaurantName, Menu menu) {
         this.restaurantName = restaurantName;
-        this.votesCount = votesCount;
-
     }
-
 
     @Override
     public String toString() {
         return "Restaurant{" +
-                "dishList=" + dishList +
-                ", id=" + id +
+                "id=" + id +
                 ", restaurantName='" + restaurantName + '\'' +
-                ", votesCount=" + votesCount +
                 '}';
     }
 
@@ -61,13 +50,7 @@ public class Restaurant implements Serializable{
         this.id = id;
     }
 
-    public List<Dish> getDishList() {
-        return dishList;
-    }
 
-    public void setDishList(List<Dish> dishList) {
-        this.dishList = dishList;
-    }
 
     public String getRestaurantName() {
         return restaurantName;
@@ -77,11 +60,5 @@ public class Restaurant implements Serializable{
         this.restaurantName = restaurantName;
     }
 
-    public int getVotesCount() {
-        return votesCount;
-    }
 
-    public void setVotesCount(int votesCount) {
-        this.votesCount = votesCount;
-    }
 }

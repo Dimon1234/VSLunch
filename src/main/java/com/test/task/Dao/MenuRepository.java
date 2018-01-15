@@ -1,15 +1,16 @@
 package com.test.task.Dao;
 
-
-import com.test.task.Entity.Dish;
+import com.test.task.Entity.Menu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.access.annotation.Secured;
 
 
-public interface DishRepository extends JpaRepository<Dish,Integer> {
+public interface MenuRepository extends JpaRepository<Menu,Integer> {
+
+    Menu findOne(Integer id);
 
     @Secured(value = "ROLE_ADMIN")
-    Dish save(Dish dish);
+    Menu save(Menu menu);
 
     @Secured(value = "ROLE_ADMIN")
     void delete(Integer id);

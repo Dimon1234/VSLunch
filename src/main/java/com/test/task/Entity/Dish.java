@@ -2,6 +2,7 @@ package com.test.task.Entity;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 import static javax.persistence.GenerationType.AUTO;
@@ -10,31 +11,32 @@ import static javax.persistence.GenerationType.AUTO;
 @Table(name = "Dish")
 public class Dish implements Serializable {
 
-   @ManyToOne
-   @JoinColumn(name = "Restaurant_ID", insertable = false, updatable=false)
-    private Restaurant restaurant;
 
     @Id
     @GeneratedValue(strategy = AUTO)
-    @Column(name = "DISH_ID")
+    @Column(name = "dish_id")
     private int id;
 
-    @Column(name = "MENU_ID")
-    private int menu_id;
 
-    @Column(name = "DISH_NAME")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "menu_id")
+    @NotNull
+    private Menu menu;
+
+
+    @Column(name = "dish_name", nullable = false)
     private String dishName;
 
 
-    @Column(name = "PRICE")
+    @Column(name = "price", nullable = false)
     private double price;
 
     public Dish() {
     }
 
-    public Dish(Restaurant restaurant, String dishName, double price) {
-        this.restaurant = restaurant;
-        this.dishName= dishName;
+    public Dish(Menu menu, String dishName, double price) {
+        this.menu = menu;
+        this.dishName = dishName;
         this.price = price;
     }
 
@@ -46,14 +48,6 @@ public class Dish implements Serializable {
         this.id = id;
     }
 
-    public int getMenu_id() {
-        return menu_id;
-    }
-
-    public void setMenu_id(int menu_id) {
-        this.menu_id = menu_id;
-    }
-
     public double getPrice() {
         return price;
     }
@@ -62,12 +56,12 @@ public class Dish implements Serializable {
         this.price = price;
     }
 
-    public Restaurant getRestaurant() {
-        return restaurant;
+    public Menu getMenu() {
+        return menu;
     }
 
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
+    public void setMenu(Menu menu) {
+        this.menu = menu;
     }
 
     public String getDishName() {
@@ -81,9 +75,6 @@ public class Dish implements Serializable {
     @Override
     public String toString() {
         return "Dish{" +
-                "restaurant=" + restaurant +
-                ", id=" + id +
-                ", menu_id=" + menu_id +
                 ", dishName='" + dishName + '\'' +
                 ", price=" + price +
                 '}';
