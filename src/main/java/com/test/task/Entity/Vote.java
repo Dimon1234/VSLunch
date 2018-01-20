@@ -2,12 +2,11 @@ package com.test.task.Entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "vote", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "vote_date"}, name = "unique_vote")})
-public class Vote implements Serializable {
+public class Vote {
 
     @Id
     @NotNull
@@ -40,7 +39,6 @@ public class Vote implements Serializable {
         this.date = date;
         this.status = status;
     }
-
 
 
     public User getUser() {

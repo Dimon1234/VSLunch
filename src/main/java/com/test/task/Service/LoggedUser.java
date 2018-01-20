@@ -1,7 +1,9 @@
-package com.test.task;
+package com.test.task.Service;
 
 import com.test.task.Entity.Role;
 import com.test.task.Entity.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -10,9 +12,9 @@ import java.util.Set;
 import static java.util.Objects.requireNonNull;
 
 
-public class LoggedUser extends org.springframework.security.core.userdetails.User {
+public class  LoggedUser extends org.springframework.security.core.userdetails.User {
 
-
+    private static Logger LOG = LogManager.getLogger(LoggedUser.class);
     private int id;
     private Set<Role> roleSet;
 
@@ -29,12 +31,15 @@ public class LoggedUser extends org.springframework.security.core.userdetails.Us
             return null;
         }
         Object user = auth.getPrincipal();
+
         return (user instanceof LoggedUser) ? (LoggedUser) user : null;
     }
 
     public static LoggedUser get() {
         LoggedUser user = safeGet();
-        requireNonNull(user, "No authorized user found");
+        String message ="No authorized user found";
+        requireNonNull(user, message);
+        LOG.error(message);
         return user;
     }
 

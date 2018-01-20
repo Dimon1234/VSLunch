@@ -2,7 +2,6 @@ package com.test.task.Entity;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 import static javax.persistence.GenerationType.AUTO;
@@ -18,9 +17,9 @@ public class Dish implements Serializable {
     private int id;
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "menu_id")
-    @NotNull
     private Menu menu;
 
 

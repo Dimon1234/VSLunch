@@ -6,6 +6,8 @@ import com.test.task.Entity.Restaurant;
 import com.test.task.Entity.Vote;
 import com.test.task.Service.UserDetailsService;
 import com.test.task.Service.VoteService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.time.LocalTime;
+import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -24,24 +27,28 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping(value = "/vote", produces = MediaType.APPLICATION_JSON_VALUE)
 public class VoteController {
 
-    public static final LocalTime EXPIRED_TIME = LocalTime.parse("13:00");
+
+    private static final Logger LOG = LogManager.getLogger(VoteController.class);
+
+
+
+    public static final LocalTime EXPIRED_TIME = LocalTime.parse("11:00");
+
+
+    private final VoteService voteService;
+    private final UserDetailsService userDetailsService;
+    private final MenuRepository menuRepository;
 
     @Autowired
-    private VoteService voteService;
+    public VoteController(VoteService voteService, UserDetailsService userDetailsService, MenuRepository menuRepository) {
+        this.voteService = voteService;
+        this.userDetailsService = userDetailsService;
+        this.menuRepository = menuRepository;
+    }
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private MenuRepository menuRepository;
-
-    @GetMapping
-    public String currentMenus() {
-        StringBuilder builder = new StringBuilder();
-        for (Menu menu : menuRepository.findAll()) {
-            builder.append(menu.toString()).append("\n");
-        }
-        return builder.toString();
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Menu> getCurrentMenus() {
+        return menuRepository.findAll();
     }
 
 
@@ -52,15 +59,21 @@ public class VoteController {
         if (menu == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
         int userId = userDetailsService.loadUserByUsername(user.getName()).getId();
 
         boolean expired = LocalTime.now().isAfter(EXPIRED_TIME);
         Vote vote;
         if (!expired) {
             vote = voteService.saveVote(userId, menu);
+            LOG.info("vote "+vote+" saved successfully");
             return new ResponseEntity<>(vote.getStatus() ? HttpStatus.CREATED : HttpStatus.OK);
-        } else
+        } else {
+            LOG.error("vote wasn't saved");
             return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
+
 
 
     }

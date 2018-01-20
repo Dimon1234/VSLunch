@@ -12,6 +12,7 @@ import java.util.Optional;
 
 
 public interface VoteRepository extends JpaRepository<Vote, Integer> {
+
     @Transactional(readOnly = true)
     @Query("SELECT v FROM Vote v WHERE v.user.id=:userId AND v.date=:date")
     Optional<Vote> getForUserAndDate(@Param("userId") int userId,

@@ -1,17 +1,17 @@
 package com.test.task.Entity;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name = "User")
-public class User implements Serializable {
+public class User {
 
     private static final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -29,6 +29,7 @@ public class User implements Serializable {
     private String password;
 
 
+    @Email
     @Column(name = "email", nullable = false)
     private String email;
 
@@ -45,10 +46,11 @@ public class User implements Serializable {
 
     public User(String name, String password, String email, Set<Role> roleSet) {
         this.name = name;
-        this.password = password;
+        this.password = encoder.encode(password);
         this.email = email;
         this.roleSet = roleSet;
     }
+
 
     public int getId() {
         return id;
@@ -88,6 +90,10 @@ public class User implements Serializable {
 
     public void setRoleSet(Set<Role> roleSet) {
         this.roleSet = roleSet;
+    }
+
+    public static PasswordEncoder getEncoder() {
+        return encoder;
     }
 
     @Override
