@@ -50,49 +50,49 @@ The REST API of this application is secured with Spring Security and every user 
 
 - Get Dishes command
     * curl -X GET "http://localhost:8080/dishes" -H 'Authorization: Basic dXNlcjoxMjM0NTY=' -H 'Content-Type: application/json'
-- Get restaurants command.
+- Get restaurants command
 	* curl -X GET "http://localhost:8080/restaurants" -H 'Authorization: Basic dXNlcjoxMjM0NTY=' -H 'Content-Type: application/json'
 - Get menus command 
     * curl -X GET "http://localhost:8080/menus" -H 'Authorization: Basic dXNlcjoxMjM0NTY=' -H 'Content-Type: application/json'
 - Get Users command (with role ADMIN)
     * curl -X GET "http://localhost:8080/users" -H 'Authorization: Basic YWRtaW46MTIzNDU2' -H 'Content-Type: application/json'
 
--Add new restaurant command
+- Add new restaurant command
 	* curl -X POST "http://localhost:8080/restaurants" -H 'Authorization: Basic YWRtaW46MTIzNDU2' -H 'Content-Type: application/json' -d '{"name":"rest-Name"}'
--Add new menu to restaurant command 
+- Add new menu to restaurant command 
     * curl -X POST "http://localhost:8080/menus" -H 'Authorization: Basic YWRtaW46MTIzNDU2' -H 'Content-Type: application/json' -d '{"restaurant":"http://localhost:8080/restaurants/2","date":"2018-01-21"}'
--Add new Dish to menu command
+- Add new Dish to menu command
     * curl -X POST "http://localhost:8080/dishes" -H 'Authorization: Basic YWRtaW46MTIzNDU2' -H 'Content-Type: application/json'
   -d '{"menu":"http://localhost:8080/menus/1","dishName":"new dish", "price":100.1}'
--Add new User command 
+- Add new User command 
     * curl -X POST "http://localhost:8080/users" -H 'Authorization: Basic YWRtaW46MTIzNDU2' -H 'Content-Type: application/json'
   -d '{"name":"user1", "email":"demo_user@mail.ru", "password":"qwerty","roles" : ["ROLE_USER"]}'
 
--Delete Menu command
+- Delete Menu command
     * curl -X DELETE "http://localhost:8080/menus/1" -H 'Authorization: Basic YWRtaW46MTIzNDU2' -H 'Content-Type: application/json'
--Delete restaurant command(after deleting menu) 
+- Delete restaurant command(after deleting menu) 
     * curl -X DELETE "http://localhost:8080/restaurants/1" -H 'Authorization: Basic YWRtaW46MTIzNDU2' -H 'Content-Type: application/json'
--Delete dish command
+- Delete dish command
     * curl -X DELETE "http://localhost:8080/dishes/1" -H 'Authorization: Basic YWRtaW46MTIzNDU2' -H 'Content-Type: application/json'
--Delete user command
+- Delete user command
     * curl -X DELETE "http://localhost:8080/users/2" -H 'Authorization: Basic YWRtaW46MTIzNDU2' -H 'Content-Type: application/json'
 
--Update Restaurant (name)
+- Update Restaurant (name)
     * curl -X PUT "http://localhost:8080/restaurants/1" -H 'Authorization: Basic YWRtaW46MTIzNDU2' -H 'Content-Type: application/json'
   -d '{"name":"new rest name"}'
--Update Menu (date)
+- Update Menu (date)
     * curl -X PUT "http://localhost:8080/menus/1" -H 'Authorization: Basic YWRtaW46MTIzNDU2' -H 'Content-Type: application/json'
   -d '{"date":"2018-01-22"}'
--Update Dish 
+- Update Dish 
     * curl -X "http://localhost:8080/dishes/1" -H 'Authorization: Basic YWRtaW46MTIzNDU2' -H 'Content-Type: application/json'
   -d '{"dishName":"new dish name","price":1000}'
--Update User 
+-  Update User 
     * curl -X PUT  "http://localhost:8080/users/2" -H 'Authorization: Basic YWRtaW46MTIzNDU2' -H 'Content-Type: application/json' -d '{"name":"new name", "email":"newemail@mail.ru", "password":"ytrewq", "roles":["ROLE_USER"]}'
 
--Search Dishes by menu
-    * curl -X GET 'http://localhost:8080/dishes/search/by-menu?menu=http://localhost:8080/menus/1' -H 'Authorization: Basic YWRtaW46MTIzNDU2' \
-  -H 'Content-Type: application/json'
--Search Menus by date
+
+- Search Dishes by menu
+    * curl -X GET 'http://localhost:8080/dishes/search/by-menu?menu=http://localhost:8080/menus/1' -H 'Authorization: Basic YWRtaW46MTIzNDU2' -H 'Content-Type: application/json'
+- Search Menus by date
     * curl -X GET 'http://localhost:8080/menus/search/by-date?date=2018-01-19' -H 'Authorization: Basic YWRtaW46MTIzNDU2' -H 'Content-Type: application/json'
 
 
