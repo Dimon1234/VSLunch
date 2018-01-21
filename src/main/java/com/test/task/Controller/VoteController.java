@@ -31,7 +31,6 @@ public class VoteController {
     private static final Logger LOG = LogManager.getLogger(VoteController.class);
 
 
-
     public static final LocalTime EXPIRED_TIME = LocalTime.parse("11:00");
 
 
@@ -66,14 +65,12 @@ public class VoteController {
         Vote vote;
         if (!expired) {
             vote = voteService.saveVote(userId, menu);
-            LOG.info("vote "+vote+" saved successfully");
+            LOG.info("vote " + vote + " saved successfully");
             return new ResponseEntity<>(vote.getStatus() ? HttpStatus.CREATED : HttpStatus.OK);
         } else {
             LOG.error("vote wasn't saved");
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-
-
 
 
     }

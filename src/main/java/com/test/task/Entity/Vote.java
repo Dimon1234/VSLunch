@@ -40,7 +40,6 @@ public class Vote {
         this.status = status;
     }
 
-
     public User getUser() {
         return user;
     }

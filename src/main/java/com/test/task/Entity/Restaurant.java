@@ -9,15 +9,13 @@ import static javax.persistence.GenerationType.AUTO;
 @Table(name = "Restaurant", uniqueConstraints = {@UniqueConstraint(columnNames = {"restaurant_id", "name"}, name = "unique_id")})
 public class Restaurant {
 
-
     @Id
     @GeneratedValue(strategy = AUTO)
     @Column(name = "restaurant_id")
     private int id;
 
-    @Column(name = "name",nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
-
 
     public Restaurant() {
     }
@@ -25,7 +23,6 @@ public class Restaurant {
     public Restaurant(String restaurantName) {
         this.name = restaurantName;
     }
-
 
     @Override
     public String toString() {

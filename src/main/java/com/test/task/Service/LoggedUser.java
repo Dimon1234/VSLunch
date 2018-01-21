@@ -12,14 +12,14 @@ import java.util.Set;
 import static java.util.Objects.requireNonNull;
 
 
-public class  LoggedUser extends org.springframework.security.core.userdetails.User {
+public class LoggedUser extends org.springframework.security.core.userdetails.User {
 
     private static Logger LOG = LogManager.getLogger(LoggedUser.class);
     private int id;
     private Set<Role> roleSet;
 
     public LoggedUser(User user) {
-        super(user.getEmail(), user.getPassword(),true, true, true,
+        super(user.getEmail(), user.getPassword(), true, true, true,
                 true, user.getRoleSet());
         this.id = user.getId();
         this.roleSet = user.getRoleSet();
@@ -37,14 +37,13 @@ public class  LoggedUser extends org.springframework.security.core.userdetails.U
 
     public static LoggedUser get() {
         LoggedUser user = safeGet();
-        String message ="No authorized user found";
+        String message = "No authorized user found";
         requireNonNull(user, message);
         LOG.error(message);
         return user;
     }
 
-    public Set<Role> getRoleSet()
-    {
+    public Set<Role> getRoleSet() {
         return roleSet;
     }
 

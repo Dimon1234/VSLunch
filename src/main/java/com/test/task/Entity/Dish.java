@@ -10,22 +10,18 @@ import static javax.persistence.GenerationType.AUTO;
 @Table(name = "Dish")
 public class Dish implements Serializable {
 
-
     @Id
     @GeneratedValue(strategy = AUTO)
     @Column(name = "dish_id")
     private int id;
 
-
-
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER,
+            optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
-
     @Column(name = "dish_name", nullable = false)
     private String dishName;
-
 
     @Column(name = "price", nullable = false)
     private double price;

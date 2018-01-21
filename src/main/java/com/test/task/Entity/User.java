@@ -33,13 +33,11 @@ public class User {
     @Column(name = "email", nullable = false)
     private String email;
 
-
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roleSet;
-
 
     public User() {
     }
@@ -50,7 +48,6 @@ public class User {
         this.email = email;
         this.roleSet = roleSet;
     }
-
 
     public int getId() {
         return id;
