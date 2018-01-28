@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface MenuRepository extends JpaRepository<Menu,Integer> {
+public interface MenuRepository extends JpaRepository<Menu, Integer> {
 
     Menu findOne(Integer id);
 
@@ -27,11 +27,8 @@ public interface MenuRepository extends JpaRepository<Menu,Integer> {
     Menu save(Menu menu);
 
 
-
-
     @Secured(value = "ROLE_ADMIN")
     void delete(Integer id);
-
 
 
     List<Menu> findAll();
@@ -40,6 +37,6 @@ public interface MenuRepository extends JpaRepository<Menu,Integer> {
     @Secured(value = "ROLE_ADMIN")
     @Modifying
     @Query("UPDATE Menu m SET m.date = :date WHERE m.id = :menuId")
-    LocalDate updateDate(@Param("menuId") int id, @Param ("date") LocalDate date);
+    LocalDate updateDate(@Param("menuId") int id, @Param("date") LocalDate date);
 
 }

@@ -18,6 +18,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     private static final Logger LOG = LogManager.getLogger(CustomAuthenticationProvider.class);
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder encoder;
+    private static LoggedUser user;
 
     @Autowired
     public CustomAuthenticationProvider(UserDetailsService userDetailsService, PasswordEncoder encoder) {
@@ -31,7 +32,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
-        LoggedUser user;
 
         if ((user = userDetailsService.loadUserByUsername(name)) != null) {
             if (encoder.matches(password, user.getPassword())) {
@@ -49,6 +49,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             LOG.error("user with name "+user.getUsername()+" does not exist");
             return null;
         }
+    }
+
+    public static LoggedUser getCurrentLoggedUser()
+    {
+        return user;
     }
 
     @Override

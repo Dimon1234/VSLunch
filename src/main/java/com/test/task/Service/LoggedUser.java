@@ -18,14 +18,14 @@ public class LoggedUser extends org.springframework.security.core.userdetails.Us
     private int id;
     private Set<Role> roleSet;
 
-    public LoggedUser(User user) {
+    private LoggedUser(User user) {
         super(user.getEmail(), user.getPassword(), true, true, true,
                 true, user.getRoleSet());
         this.id = user.getId();
         this.roleSet = user.getRoleSet();
     }
 
-    public static LoggedUser safeGet() {
+    private static LoggedUser safeGet() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null) {
             return null;
@@ -35,7 +35,7 @@ public class LoggedUser extends org.springframework.security.core.userdetails.Us
         return (user instanceof LoggedUser) ? (LoggedUser) user : null;
     }
 
-    public static LoggedUser get() {
+    private static LoggedUser get() {
         LoggedUser user = safeGet();
         String message = "No authorized user found";
         requireNonNull(user, message);
@@ -43,7 +43,7 @@ public class LoggedUser extends org.springframework.security.core.userdetails.Us
         return user;
     }
 
-    public Set<Role> getRoleSet() {
+    Set<Role> getRoleSet() {
         return roleSet;
     }
 

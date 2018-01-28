@@ -1,8 +1,5 @@
 package com.test.task.Service;
 
-import com.test.task.Dao.DishRepository;
-import com.test.task.Dao.MenuRepository;
-import com.test.task.Dao.RestaurantRepository;
 import com.test.task.Dao.UserRepository;
 import com.test.task.Entity.Role;
 import com.test.task.Entity.User;
@@ -19,13 +16,6 @@ public class InitService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private RestaurantRepository restaurantRepository;
-
-    @Autowired
-    private MenuRepository menuRepository;
-    @Autowired
-    private DishRepository dishRepository;
 
     @PostConstruct
     public void initUsers()
@@ -40,7 +30,7 @@ public class InitService {
         userRepository.save(new User("admin", "123456", "admin@mail.ru", rolesAdmin));
         userRepository.save(new User("user","123456","email@mail.ru",rolesUser));
 
-
     }
+
 
 }

@@ -4,7 +4,7 @@ import com.test.task.Dao.MenuRepository;
 import com.test.task.Entity.Menu;
 import com.test.task.Entity.Restaurant;
 import com.test.task.Entity.Vote;
-import com.test.task.Service.UserDetailsService;
+import com.test.task.Service.CustomAuthenticationProvider;
 import com.test.task.Service.VoteService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -31,17 +30,15 @@ public class VoteController {
     private static final Logger LOG = LogManager.getLogger(VoteController.class);
 
 
-    public static final LocalTime EXPIRED_TIME = LocalTime.parse("11:00");
+    private static final LocalTime EXPIRED_TIME = LocalTime.parse("11:00");
 
 
     private final VoteService voteService;
-    private final UserDetailsService userDetailsService;
     private final MenuRepository menuRepository;
 
     @Autowired
-    public VoteController(VoteService voteService, UserDetailsService userDetailsService, MenuRepository menuRepository) {
+    public VoteController(VoteService voteService, MenuRepository menuRepository) {
         this.voteService = voteService;
-        this.userDetailsService = userDetailsService;
         this.menuRepository = menuRepository;
     }
 
@@ -52,14 +49,14 @@ public class VoteController {
 
 
     @RequestMapping(value = "/{id}", method = POST)
-    public ResponseEntity<Restaurant> vote(@PathVariable("id") Integer id, Principal user) {
+    public ResponseEntity<Restaurant> vote(@PathVariable("id") Integer id) {
 
         Menu menu = menuRepository.findOne(id);
         if (menu == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        int userId = userDetailsService.loadUserByUsername(user.getName()).getId();
+        int userId = CustomAuthenticationProvider.getCurrentLoggedUser().getId();
 
         boolean expired = LocalTime.now().isAfter(EXPIRED_TIME);
         Vote vote;
