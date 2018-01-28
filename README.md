@@ -19,13 +19,12 @@ Build a voting system for deciding where to have lunch.
     - If it is after 11:00 then it is too late, vote can't be changed
 
 Each restaurant provides new menu each day.
-
 ==================
 
-###Requirements for this project
+### Requirements for this project
 Design and implement a JSON API using Hibernate/Spring/SpringMVC without frontend.
 
-###Packaging and deploying
+### Packaging and deploying
 #### Prerequisites
 - Java 8
 - Maven > 3.0
@@ -41,8 +40,8 @@ Design and implement a JSON API using Hibernate/Spring/SpringMVC without fronten
 
 - After step 2 the application should be accessable by 'http://localhost:8080/'
 
-###ABOUT
-####Configuration
+### ABOUT
+#### Configuration
 The application configured with predefined users(username, role, password, auth):
 - admin, ROLE_ADMIN, 123456, Basic YWRtaW46MTIzNDU2
 - user, ROLE_USER, 123456, Basic dXNlcjoxMjM0NTY=
@@ -52,7 +51,7 @@ If you want to add new user you can change init class: src/main/com/test/task/Se
 Before saving in database all passwords are encrypted
 Add role for the user. Available roles: ROLE_ADMIN, ROLE_USER.
 
-####Used technologies
+#### Used technologies
 - Java 8
 - Maven 3
 - Spring Boot
