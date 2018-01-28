@@ -19,6 +19,7 @@ public interface VoteRepository extends JpaRepository<Vote, Integer> {
                                      @Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 
 
-
-
+    @Transactional(readOnly = true)
+    @Query("SELECT COUNT(*) FROM Vote v WHERE v.menu.restaurant.id=:rest_id")
+    Integer getVotesCountForRestaurant(@Param("rest_id") int restId);
 }

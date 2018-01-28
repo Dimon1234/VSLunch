@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalTime;
-import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -42,9 +41,11 @@ public class VoteController {
         this.menuRepository = menuRepository;
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Menu> getCurrentMenus() {
-        return menuRepository.findAll();
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getRestaurantVotesCount(@PathVariable("id") int rest_id) {
+
+        return String.format("Restaurant with id %s has %s votes",
+                rest_id, voteService.getRestaurantVotesCount(rest_id));
     }
 
 
@@ -65,8 +66,11 @@ public class VoteController {
             LOG.info("vote " + vote + " saved successfully");
             return new ResponseEntity<>(vote.getStatus() ? HttpStatus.CREATED : HttpStatus.OK);
         } else {
-            LOG.error("vote wasn't saved");
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            vote = voteService.repeatSaving(userId, menu);
+            if (vote.getStatus()) LOG.info("vote " + vote + " saved successfully");
+            else LOG.error("vote wasn't saved 'cause time is expired");
+
+            return new ResponseEntity<>(vote.getStatus() ? HttpStatus.CREATED : HttpStatus.CONFLICT);
         }
 
 

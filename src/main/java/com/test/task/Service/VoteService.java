@@ -37,4 +37,27 @@ public class VoteService {
         return vote;
     }
 
+    @CacheEvict(value = "menus", allEntries = true)
+    @Transactional
+    public Vote repeatSaving(int user_id, Menu menu) {
+        LocalDate date = menu.getDate();
+        Vote vote = voteRepository.getForUserAndDate(user_id, date)
+                .map(v -> {
+                    v.setMenu(menu);
+                    v.setStatus(false);
+                    return v;
+                })
+                .orElseGet(() ->
+                        new Vote(userRepository.getOne(user_id), menu, date, true));
+        if (vote.getStatus()) voteRepository.save(vote);
+        return vote;
+    }
+
+
+    public Integer getRestaurantVotesCount(int rest_id)
+    {
+        Integer count = voteRepository.getVotesCountForRestaurant(rest_id);
+
+        return count == null ? 0 : count;
+    }
 }
